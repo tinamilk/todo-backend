@@ -1,19 +1,16 @@
-import * as fs from 'node:fs';
 import {v4 as uuidv4} from 'uuid';
-
-let jsonData;
-
-fs.readFile('hello.json', 'utf8', (error,data) => {
-	if(error) throw error;
-	jsonData = JSON.parse(data);
-});
+import { writeJSON, readJSON } from '../../helpers/JSONdata.js';
 
 
-export const postTodo = (req, res) => {
-  
-	const tasks = jsonData;
-    
-	if (req.body.title && tasks.findIndex(task => task.title === req.body.title) === -1) {
+export const postTodo = async(req, res) => {
+
+	try {
+		const tasks = await readJSON();
+
+		if (!req.body.title
+			|| tasks.findIndex(task => task.title === req.body.title) !== -1) {
+			res.status(422).send('Bad request');
+		}
 
 		tasks.push({
 			title: req.body.title,
@@ -22,13 +19,11 @@ export const postTodo = (req, res) => {
 			isDone: false
 		});
 
-		fs.writeFile('hello.json', JSON.stringify(tasks), (err) => {
-			if (err) throw new Error();
-			else {
-				res.status(200).send('Status Working');
-			}
-		});
-	} else {
+		await writeJSON(tasks);
+		res.status(200).send('Status Working');
+
+	} catch (err) {
 		res.status(422).send('Bad request');
 	}
+  
 };

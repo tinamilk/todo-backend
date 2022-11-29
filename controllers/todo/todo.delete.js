@@ -1,24 +1,23 @@
-import * as fs from 'node:fs';
+import { readJSON, writeJSON } from '../../helpers/JSONdata.js';
 
-let jsonData;
+export const deleteTask = async(req, res) => {
 
-fs.readFile('hello.json', 'utf8', (error,data) => {
-	if(error) throw error;
-	jsonData = JSON.parse(data);
-});
+	try {
+		const tasks = await readJSON();
+		const taskIndex = tasks.findIndex(task => task.id === req.params.id);
 
-export const deleteTask = (req, res) => {
-	const tasks = jsonData;
-	const taskIndex = tasks.findIndex(task => task.id === req.params.id);
+		if (taskIndex !== -1) {
+			tasks.splice(taskIndex, 1);
+			writeJSON(tasks);
+			console.log(tasks);
+			res.status(200).send('successs');
+		}
 
-	taskIndex === -1 && res.status(404).send('Task not found');
+		res.status(404).send('Task not found');
 
-	tasks.splice(taskIndex, 1);
-	fs.writeFile('hello.json', JSON.stringify(tasks), (err) => {
 
-		err
-			? res.status(404).send('Task not found')
-			: res.status(200).send('Success');
-	});
+	} catch (err) {
+		res.status(404).send('Task not found');
+	}
 
 };

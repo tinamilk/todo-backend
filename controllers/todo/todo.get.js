@@ -1,14 +1,17 @@
-import { readJSON } from '../../helpers/readJSON.js';
+import { readJSON } from '../../helpers/JSONdata.js';
 
 
-export const getTodos = (req, res) => {
+export const getTodos = async(req, res) => {
 
-	const tasks = readJSON();
+	try {
+		const tasks = await readJSON();
 
-	tasks 
-		? res.status(200).json({
+		res.status(200).json({
 			count: tasks.length,
 			tasks: tasks
-		})
-		: res.status(400).json('task not created');
+		});
+	} catch (err) {
+		res.status(400).json('task not created');
+	}
+
 };
