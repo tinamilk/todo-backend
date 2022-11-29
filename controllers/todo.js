@@ -28,7 +28,18 @@ export const deleteTask = (req, res) => {
 	const taskIndex = tasks.findIndex(task => task.id === req.params.id);
 
 	if (taskIndex !== -1) {
-		tasks.splice(index, 1);
+		tasks.splice(taskIndex, 1);
+		res.status(200).send('Success!');
+	} else {
+		res.status(404).send('Task not found');
+	}
+};
+
+export const changeTask = (req, res) => {
+	const taskIndex = tasks.findIndex(task => task.id === req.params.id);
+
+	if (taskIndex !== 1) {
+		tasks[taskIndex] = req.body;
 		res.status(200).send('Success!');
 	} else {
 		res.status(404).send('Task not found');
