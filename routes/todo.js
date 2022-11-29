@@ -1,10 +1,9 @@
-/* eslint-disable no-undef */
 import express from 'express';
 
-
-// const { getTodos, postTodo, deleteTask } = require('../controllers/todo');
-
-import { getTodos, postTodo, deleteTask, changeTask } from '../controllers/todo.js';
+import { getTodos } from '../controllers/todo/todo.get.js';
+import { postTodo } from '../controllers/todo/todo.post.js';
+import { deleteTask } from '../controllers/todo/todo.delete.js';
+import { changeTask } from '../controllers/todo/todo.patch.js';
 
 const router = express.Router();
 
