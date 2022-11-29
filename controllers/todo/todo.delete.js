@@ -11,15 +11,14 @@ export const deleteTask = (req, res) => {
 	const tasks = jsonData;
 	const taskIndex = tasks.findIndex(task => task.id === req.params.id);
 
-	if (taskIndex !== -1) {
-		tasks.splice(taskIndex, 1);
-		fs.writeFile('hello.json', JSON.stringify(tasks), (err) => {
-			if (err) throw new Error();
-			else {
-				res.status(200).send('Status Working');
-			}
-		});
-	} else {
-		res.status(404).send('Task not found');
-	}
+	taskIndex === -1 && res.status(404).send('Task not found');
+
+	tasks.splice(taskIndex, 1);
+	fs.writeFile('hello.json', JSON.stringify(tasks), (err) => {
+
+		err
+			? res.status(404).send('Task not found')
+			: res.status(200).send('Success');
+	});
+
 };

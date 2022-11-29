@@ -1,17 +1,14 @@
-import * as fs from 'node:fs';
+import { readJSON } from '../../helpers/readJSON.js';
 
-let jsonData;
-
-fs.readFile('hello.json', 'utf8', (error,data) => {
-	if(error) throw error;
-	jsonData = JSON.parse(data);
-});
 
 export const getTodos = (req, res) => {
 
-	const tasks = jsonData;
-	res.status(200).json({
-		count: tasks.length,
-		tasks: tasks
-	});
+	const tasks = readJSON();
+
+	tasks 
+		? res.status(200).json({
+			count: tasks.length,
+			tasks: tasks
+		})
+		: res.status(400).json('task not created');
 };
