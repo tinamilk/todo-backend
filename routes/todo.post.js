@@ -1,10 +1,12 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 const postRouter = express.Router();
 
-postRouter.post('/tasks', async (req, res) => {
+postRouter.post(process.env.TASKS_ENDPOINT, async (req, res) => {
 	try {
 		const tasks = await readJSON();
 
