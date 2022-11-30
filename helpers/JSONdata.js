@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 
 
 export const writeJSON = async(data) => {	
-	await fs.writeFile('hello.json',  JSON.stringify(data));		
+	await fs.writeFile('hello.json',  JSON.stringify(data, null, 4));		
 };
 
 export const readJSON = async() => {

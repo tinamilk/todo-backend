@@ -10,7 +10,7 @@ import patchRouter from './routes/todo.patch.js';
 import deleteRouter from './routes/todo.delete.js';
 
 const app = express();
-const PORT = process.env.PORT || 3010;
+const PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
 
