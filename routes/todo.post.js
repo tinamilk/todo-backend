@@ -1,8 +1,11 @@
+import express from 'express';
 import {v4 as uuidv4} from 'uuid';
-import { writeJSON, readJSON } from '../../helpers/JSONdata.js';
+import { writeJSON, readJSON } from '../helpers/JSONdata.js';
+
+const postRouter = express.Router();
 
 
-export const postTodo = async(req, res) => {
+postRouter.post('/tasks', async(req, res) => {
 
 	try {
 		const tasks = await readJSON();
@@ -29,4 +32,6 @@ export const postTodo = async(req, res) => {
 		res.status(422).send('Bad request');
 	}
   
-};
+});
+
+export default postRouter;

@@ -1,6 +1,11 @@
-import { readJSON, writeJSON } from '../../helpers/JSONdata.js';
+import express from 'express';
+import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 
-export const changeTask = async(req, res) => {
+
+const patchRouter = express.Router();
+
+
+patchRouter.patch('/tasks/:id', async(req, res) => {
 	try {
 		const tasks = await readJSON();
 		const taskIndex = tasks.findIndex(task => task.id === req.params.id);
@@ -18,4 +23,6 @@ export const changeTask = async(req, res) => {
 		res.status(400).send('Not created');
 	}
 
-};
+});
+
+export default patchRouter;

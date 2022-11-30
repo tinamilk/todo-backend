@@ -1,6 +1,10 @@
-import { readJSON, writeJSON } from '../../helpers/JSONdata.js';
+import express from 'express';
+import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 
-export const deleteTask = async(req, res) => {
+
+const deleteRouter = express.Router();
+
+deleteRouter.delete('/tasks/:id', async(req, res) => {
 
 	try {
 		const tasks = await readJSON();
@@ -9,8 +13,8 @@ export const deleteTask = async(req, res) => {
 		if (taskIndex !== -1) {
 			tasks.splice(taskIndex, 1);
 			await writeJSON(tasks);
-			console.log(tasks);
 			res.status(200).send('successs');
+			return;
 		}
 
 		res.status(404).send('Task not found');
@@ -20,4 +24,6 @@ export const deleteTask = async(req, res) => {
 		res.status(400).send('Not created');
 	}
 
-};
+});
+
+export default deleteRouter;

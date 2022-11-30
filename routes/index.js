@@ -1,9 +1,9 @@
-// eslint-disable-next-line no-undef
 import express from 'express';
 
+const redirectRouter = express.Router();
 
-const router = express.Router();
-
-router.get('/', function(req, res) {
+redirectRouter.get('/', (req, res) => {
 	res.redirect('/tasks');
 });
+
+export default redirectRouter;
