@@ -8,17 +8,29 @@ getRouter.get('/tasks', async (req, res) => {
 		const tasks = await readJSON();
 		const { filterBy, order, pp, page } = req.query;
 
+		console.log('pp', pp);
+		console.log('pagge', page);
+		console.log(req.query);
+
 		if (!pp || !page || pp < 5 || pp > 20 || page < 1) {
 			res.status(422).json('bad request');
 			return;
 		}
 
-		const filtered =
-			filterBy === 'done'
-				? tasks.filter((task) => task.isDone === true)
-				: filterBy === 'undone'
-					? tasks.filter((task) => task.isDone === false)
-					: tasks;
+		const filterTasks = () => {
+			switch (filterBy) {
+			case 'done':
+				return tasks.filter((task) => task.isDone === true);
+			case 'undone':
+				return tasks.filter((task) => task.isDone === false);
+			default:
+				return tasks;
+			}
+		};
+
+		const filtered = filterTasks();
+
+		console.log('filtered', filtered);
 
 		const sorted =
 			order === 'desc'
