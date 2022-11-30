@@ -7,9 +7,12 @@ export const postTodo = async(req, res) => {
 	try {
 		const tasks = await readJSON();
 
-		if (!req.body.title
-			|| tasks.findIndex(task => task.title === req.body.title) !== -1) {
+		if (!req.body.title && !req.body.title.split(' ')) {
 			res.status(422).send('Bad request');
+			return;
+		} if (tasks.findIndex(task => task.title === req.body.title) !== -1) {
+			res.status(400).send('Task with the same name exists');
+			return;
 		}
 
 		tasks.push({

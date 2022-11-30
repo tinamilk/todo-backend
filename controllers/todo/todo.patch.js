@@ -1,26 +1,21 @@
-import * as fs from 'node:fs';
+import { readJSON, writeJSON } from '../../helpers/JSONdata.js';
 
-let jsonData;
+export const changeTask = async(req, res) => {
+	try {
+		const tasks = await readJSON();
+		const taskIndex = tasks.findIndex(task => task.id === req.params.id);
 
-fs.readFile('hello.json', 'utf8', (error,data) => {
-	if(error) throw error;
-	jsonData = JSON.parse(data);
-});
+		if (taskIndex !== -1 && req.body.title && req.body.title.split(' ')) {
+			tasks[taskIndex] = {...tasks[taskIndex], ...req.body};
+			await writeJSON(tasks);
+			res.status(200).send('Success');
+			return;
+			
+		}
+		res.status(422).send('Invalid request');
 
-export const changeTask = (req, res) => {
-	const tasks = jsonData;
-	const taskIndex = tasks.findIndex(task => task.id === req.params.id);
-
-	if (taskIndex !== 1) {
-		tasks[taskIndex] = req.body;
-
-		fs.writeFile('hello.json', JSON.stringify(tasks), (err) => {
-			if (err) throw new Error();
-			else {//
-				res.status(200).send('Success');
-			}
-		});
-	} else {
-		res.status(404).send('Task not found');
+	} catch (err) {
+		res.status(400).send('Not created');
 	}
+
 };

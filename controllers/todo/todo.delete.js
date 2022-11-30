@@ -8,7 +8,7 @@ export const deleteTask = async(req, res) => {
 
 		if (taskIndex !== -1) {
 			tasks.splice(taskIndex, 1);
-			writeJSON(tasks);
+			await writeJSON(tasks);
 			console.log(tasks);
 			res.status(200).send('successs');
 		}
@@ -17,7 +17,7 @@ export const deleteTask = async(req, res) => {
 
 
 	} catch (err) {
-		res.status(404).send('Task not found');
+		res.status(400).send('Not created');
 	}
 
 };
