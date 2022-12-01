@@ -11,10 +11,6 @@ getRouter.get(process.env.TASKS_ENDPOINT, async (req, res) => {
 		const tasks = await readJSON();
 		const { filterBy, order, pp, page } = req.query;
 
-		console.log('pp', pp);
-		console.log('pagge', page);
-		console.log(req.query);
-
 		if (!pp || !page || pp < 5 || pp > 20 || page < 1) {
 			res.status(422).json('bad request');
 			return;
@@ -32,8 +28,6 @@ getRouter.get(process.env.TASKS_ENDPOINT, async (req, res) => {
 		};
 
 		const filtered = filterTasks();
-
-		console.log('filtered', filtered);
 
 		const sorted =
 			order === 'desc'

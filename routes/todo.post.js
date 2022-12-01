@@ -10,9 +10,6 @@ postRouter.post(process.env.TASKS_ENDPOINT, async (req, res) => {
 	try {
 		const tasks = await readJSON();
 
-		console.log(!req.body.title);
-		console.log(!req.body.title.split(' ').join(''));
-
 		if (!req.body.title || !req.body.title.split(' ').join('')) {
 			res.status(422).send('Bad request');
 			return;

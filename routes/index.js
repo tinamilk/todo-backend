@@ -7,7 +7,7 @@ dotenv.config();
 const redirectRouter = express.Router();
 
 redirectRouter.get(process.env.DEFAULT_ENDPOINT, (req, res) => {
-	res.redirect('/tasks');
+	res.redirect(TASKS_DEFAULT_ENDPOINT);
 });
 
 
