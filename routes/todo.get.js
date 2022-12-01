@@ -1,12 +1,9 @@
 import express from 'express';
 import { readJSON } from '../helpers/JSONdata.js';
-import * as dotenv from 'dotenv';
 
 const getRouter = express.Router();
-dotenv.config();
 
-
-getRouter.get(process.env.TASKS_ENDPOINT, async (req, res) => {
+getRouter.get('/tasks/', async (req, res) => {
 	try {
 		const tasks = await readJSON();
 		const { filterBy, order, pp, page } = req.query;

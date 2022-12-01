@@ -1,12 +1,10 @@
 import express from 'express';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 import { validateTitle } from '../helpers/validateTitle.js';
-import * as dotenv from 'dotenv';
 
 const patchRouter = express.Router();
-dotenv.config();
 
-patchRouter.patch(`${process.env.TASKS_ENDPOINT}:id`, async (req, res) => {
+patchRouter.patch('/tasks/:id', async (req, res) => {
 	try {
 		const tasks = await readJSON();
 		const taskIndex = tasks.findIndex((task) => task.id === req.params.id);

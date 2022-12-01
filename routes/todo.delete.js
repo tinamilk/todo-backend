@@ -1,13 +1,9 @@
 import express from 'express';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 
 const deleteRouter = express.Router();
 
-deleteRouter.delete(`${process.env.TASKS_ENDPOINT}:id`, async(req, res) => {
+deleteRouter.delete('/tasks/:id', async(req, res) => {
 
 	try {
 		const tasks = await readJSON();
