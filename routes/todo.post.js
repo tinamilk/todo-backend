@@ -1,21 +1,24 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
+import { getIsUnique } from '../helpers/getIsUnique.js';
+import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-router.post('/tasks/', async (req, res) => {
+router.post('/tasks/', body('title').not().isEmpty().trim().escape().isLength({ min: 1 }), async (req, res) => {
 
 	try {
 		const tasks = await readJSON();
 
-		if (!req.body.title || !req.body.title.split(' ').join('')) {
-			res.status(422).send('Bad request');
-			return;
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(422).send('Task title is empty');
 		}
-		if (tasks.findIndex((task) => task.title === req.body.title) !== -1) {
-			res.status(400).send('Task with the same   name exists');
-			return;
+
+		if (getIsUnique(req.body.title)) {
+			return res.status(400).send('Task with the same name exists');
 		}
 
 		const date = new Date();
@@ -29,8 +32,9 @@ router.post('/tasks/', async (req, res) => {
 		});
 
 		await writeJSON(tasks);
-		res.status(200).send('Status Working');
+		res.status(200).send('Success');
 	} catch (err) {
+		console.log(err.message);
 		res.status(422).send('Bad request');
 	}
 });
