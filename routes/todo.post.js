@@ -2,9 +2,9 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 
-const postRouter = express.Router();
+const router = express.Router();
 
-postRouter.post('/tasks/', async (req, res) => {
+router.post('/tasks/', async (req, res) => {
 
 	try {
 		const tasks = await readJSON();
@@ -14,7 +14,7 @@ postRouter.post('/tasks/', async (req, res) => {
 			return;
 		}
 		if (tasks.findIndex((task) => task.title === req.body.title) !== -1) {
-			res.status(400).send('Task with the same name exists');
+			res.status(400).send('Task with the same   name exists');
 			return;
 		}
 
@@ -35,4 +35,4 @@ postRouter.post('/tasks/', async (req, res) => {
 	}
 });
 
-export default postRouter;
+export default router;

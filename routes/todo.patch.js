@@ -2,9 +2,9 @@ import express from 'express';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 import { validateTitle } from '../helpers/validateTitle.js';
 
-const patchRouter = express.Router();
+const router = express.Router();
 
-patchRouter.patch('/tasks/:id', async (req, res) => {
+router.patch('/tasks/:id', async (req, res) => {
 	try {
 		const tasks = await readJSON();
 		const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
@@ -12,7 +12,7 @@ patchRouter.patch('/tasks/:id', async (req, res) => {
 
 		if (
 			taskIndex === -1 ||
-			!(await validateTitle(title, req.params.id)) ||
+			title && !(await validateTitle(title, req.params.id)) ||
 			('isDone' in req.body && typeof isDone !== 'boolean')
 		) {
 			res.status(422).send('Invalid request');
@@ -36,4 +36,4 @@ patchRouter.patch('/tasks/:id', async (req, res) => {
 	}
 });
 
-export default patchRouter;
+export default router;

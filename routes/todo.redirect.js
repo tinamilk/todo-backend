@@ -1,10 +1,10 @@
 import express from 'express';
 
-const redirectRouter = express.Router();
+const router = express.Router();
 
-redirectRouter.get('/', (req, res) => {
-	res.redirect('/tasks/pp=5&page=1');
+router.get('/', (req, res) => {
+	res.redirect('/tasks/?pp=5&page=1');
 });
 
 
-export default redirectRouter;
+export default router;

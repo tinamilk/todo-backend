@@ -1,30 +1,22 @@
 import express from 'express';
 import { readJSON } from '../helpers/JSONdata.js';
 
-const getRouter = express.Router();
+const router = express.Router();
 
-getRouter.get('/tasks/', async (req, res) => {
+router.get('/tasks/', async (req, res) => {
 	try {
 		const tasks = await readJSON();
 		const { filterBy, order, pp, page } = req.query;
+
 
 		if (!pp || !page || pp < 5 || pp > 20 || page < 1) {
 			res.status(422).json('bad request');
 			return;
 		}
 
-		const filterTasks = () => {
-			switch (filterBy) {
-			case 'done':
-				return tasks.filter((task) => task.isDone === true);
-			case 'undone':
-				return tasks.filter((task) => task.isDone === false);
-			default:
-				return tasks;
-			}
-		};
-
-		const filtered = filterTasks();
+		const filtered = !filterBy
+			? tasks
+			: tasks.filter((task) => task.isDone === (filterBy === 'done'));
 
 		const sorted =
 			order === 'desc'
@@ -42,4 +34,4 @@ getRouter.get('/tasks/', async (req, res) => {
 	}
 });
 
-export default getRouter;
+export default router;

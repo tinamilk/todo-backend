@@ -1,9 +1,9 @@
 import express from 'express';
 import { writeJSON, readJSON } from '../helpers/JSONdata.js';
 
-const deleteRouter = express.Router();
+const router = express.Router();
 
-deleteRouter.delete('/tasks/:id', async(req, res) => {
+router.delete('/tasks/:id', async(req, res) => {
 
 	try {
 		const tasks = await readJSON();
@@ -25,4 +25,4 @@ deleteRouter.delete('/tasks/:id', async(req, res) => {
 
 });
 
-export default deleteRouter;
+export default router;
