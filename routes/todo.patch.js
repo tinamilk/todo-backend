@@ -18,7 +18,7 @@ router.patch(
 		.trim()
 		.escape()
 		.isLength({ min: 1 })
-		.withMessage('no tasks to add')
+		.withMessage('Title is empty')
 		.custom(async (value, { req }) => {
 			if ((await getIsUnique(value, req.params.id))) {
 				throw new Error('task title exists');
@@ -62,9 +62,9 @@ router.patch(
 
 			tasks[taskIndex] = changedTask;
 			await writeJSON(tasks);
-			res.status(200).send(changedTask);
+			return res.status(200).send(changedTask);
 		} catch (err) {
-			res.status(400).send('Not created');
+			return res.status(400).send(err.message);
 		}
 	}
 );
