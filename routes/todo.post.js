@@ -14,10 +14,10 @@ router.post('/tasks/', body('title').not().isEmpty().trim().escape().isLength({ 
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
-			return res.status(422).send('Task title is empty');
+			return res.status(422).send('No title to add');
 		}
 
-		if (getIsUnique(req.body.title)) {
+		if (await getIsUnique(req.body.title)) {
 			return res.status(400).send('Task with the same name exists');
 		}
 
@@ -34,8 +34,7 @@ router.post('/tasks/', body('title').not().isEmpty().trim().escape().isLength({ 
 		await writeJSON(tasks);
 		res.status(200).send('Success');
 	} catch (err) {
-		console.log(err.message);
-		res.status(422).send('Bad request');
+		res.status(422).send(err.message);
 	}
 });
 

@@ -5,6 +5,6 @@ export const getIsUnique = async (title, id = null) => {
 	const tasks = await readJSON();
 
 	return tasks.find(
-		(task) => task.title === title && task.id !== id
+		(task) => id ? task.title === title && task.id !== id : task.title === title
 	);
 };

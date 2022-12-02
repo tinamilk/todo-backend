@@ -5,46 +5,68 @@ import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-router.patch('/tasks/:id', body('title').not().isEmpty().trim().escape().isLength({ min: 1 }), async (req, res) => {
-	try {
-		const tasks = await readJSON();
-		const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
-		const { title, isDone } = req.body;
-
-		const errors = validationResult(req);
-
-		if (title && !errors.isEmpty()) {
-			return res.status(422).send('Task title is empty');
+router.patch(
+	'/tasks/:id',
+	body().custom((value) => {
+		if ('isDone' in value || 'title' in value) {
+			return true;
 		}
+		throw new Error('Nothing to change');
+	}),
+	body('title')
+		.optional()
+		.trim()
+		.escape()
+		.isLength({ min: 1 })
+		.withMessage('no tasks to add')
+		.custom(async (value, { req }) => {
+			if ((await getIsUnique(value, req.params.id))) {
+				throw new Error('task title exists');
+			}
+			return true;
+		}),
+	body('isDone')
+		.optional()
+		.custom((value) => {
+			if (typeof value !== 'boolean') {
+				throw new Error('IsDone is not boolean');
+			}
+			return true;
+		}),
+	async (req, res) => {
+		try {
+			const tasks = await readJSON();
+			const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
+			const { title, isDone } = req.body;
 
-		if ('isDone' in req.body && typeof isDone !== 'boolean') {
-			return res.status(422).send('isDone in not boolean');
+			const errors = validationResult(req);
+
+			if (!errors.isEmpty()) {
+				return res.status(422).json({ errors: errors.array() });
+			}
+
+			if (taskIndex === -1) {
+				return res.status(404).send('Tasks doesnt exist');
+			}
+
+			const changedTitle = title || tasks[taskIndex].title;
+			const changedIsDone =
+				'isDone' in req.body ? isDone : tasks[taskIndex].isDone;
+
+			const changedTask = {
+				...tasks[taskIndex],
+				title: changedTitle,
+				isDone: changedIsDone,
+				updatedAt: new Date(),
+			};
+
+			tasks[taskIndex] = changedTask;
+			await writeJSON(tasks);
+			res.status(200).send(changedTask);
+		} catch (err) {
+			res.status(400).send('Not created');
 		}
-
-		if (taskIndex === -1 ) {
-			return res.status(404).send('Tasks doesnt exist');
-		}
-
-		if (title && (await getIsUnique(title, req.params.id))) {
-			return res.status(422).send('Task title exists');
-		}
-
-
-		const changedTitle = title || tasks[taskIndex].title;
-		const changedIsDone =
-			'isDone' in req.body ? isDone : tasks[taskIndex].isDone;
-
-		tasks[taskIndex] = {
-			...tasks[taskIndex],
-			title: changedTitle,
-			isDone: changedIsDone,
-			updatedAt: new Date(),
-		};
-		await writeJSON(tasks);
-		res.status(200).send('Success');
-	} catch (err) {
-		res.status(400).send('Not created');
 	}
-});
+);
 
 export default router;
