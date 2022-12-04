@@ -11,7 +11,7 @@ router.delete('/tasks/:id', async (req, res) => {
 		if (taskIndex !== -1) {
 			tasks.splice(taskIndex, 1);
 			await writeJSON(tasks);
-			return res.status(200).send(`Tasks ${id} was deleted`);
+			return res.status(200).send(`Tasks ${req.params.id} was deleted`);
 		}
 
 		return res.status(404).send('Task not found');
