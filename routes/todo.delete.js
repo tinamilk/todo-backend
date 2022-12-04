@@ -1,23 +1,32 @@
 import express from 'express';
-import { writeJSON, readJSON } from '../helpers/JSONdata.js';
+import db from '../models/index.js';
+const Task = db.tasks;
 
 const router = express.Router();
 
-router.delete('/tasks/:id', async (req, res) => {
-	try {
-		const tasks = await readJSON();
-		const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
+router.delete('/tasks/:id', (req, res) => {
+	const id = req.params.id;
 
-		if (taskIndex !== -1) {
-			tasks.splice(taskIndex, 1);
-			await writeJSON(tasks);
-			return res.status(200).send(`Tasks ${req.params.id} was deleted`);
-		}
-
-		return res.status(404).send('Task not found');
-	} catch (err) {
-		return res.status(400).send(err.message);
-	}
+	Task.destroy({
+		where: { id: id },
+	})
+		.then((num) => {
+			if (num == 1) {
+				res.send({
+					message: 'Task was deleted successfully!',
+				});
+			} else {
+				res.send({
+					message: `Cannot delete Task with id=${id}. Maybe Task was not found!`,
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: 'Could not delete Task with id=' + id,
+				error: err.message,
+			});
+		});
 });
 
 export default router;
