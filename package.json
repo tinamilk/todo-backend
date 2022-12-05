@@ -19,8 +19,6 @@
   },
   "homepage": "https://github.com/tinamilk/todo-backend#readme",
   "dependencies": {
-    "babel-plugin-add-module-exports": "^1.0.4",
-    "body-parser": "^1.20.1",
     "config": "^3.3.8",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -29,11 +27,11 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "prettier": "^2.8.0",
+    "recursive-readdir-sync": "^1.0.6",
     "sequelize": "^6.26.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
     "eslint": "^8.28.0",
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.2",
