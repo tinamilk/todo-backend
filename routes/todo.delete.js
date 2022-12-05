@@ -23,8 +23,7 @@ router.delete('/tasks/:id', (req, res) => {
 		})
 		.catch((err) => {
 			res.status(500).send({
-				message: 'Could not delete Task with id=' + id,
-				error: err.message,
+				message: err.errors.map((e) => e.message),
 			});
 		});
 });

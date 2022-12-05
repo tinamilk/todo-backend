@@ -13,18 +13,17 @@ router.patch('/tasks/:id', (req, res) => {
 		.then((num) => {
 			if (num == 1) {
 				res.status(200).send({
-					message: 'Task was updated successfully.'
+					message: 'Task was updated successfully.',
 				});
 			} else {
 				res.status(400).send({
-					message: `Cannot update Task with id=${id}. Maybe Task was not found or req.body is empty!`,
+					message: `Cannot update Task with id=${id}.`,
 				});
 			}
 		})
 		.catch((err) => {
 			res.status(500).send({
-				message: 'Error updating Task with id=' + id,
-				error: err.message,
+				message: err.errors.map((e) => e.message),
 			});
 		});
 });
