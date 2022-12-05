@@ -7,7 +7,6 @@ import postRouter from './routes/todo.post.js';
 import patchRouter from './routes/todo.patch.js';
 import deleteRouter from './routes/todo.delete.js';
 import cors from 'cors';
-import db from './models/index.js';
 
 const port = config.get('Customer.dbConfig.port');
 
@@ -30,16 +29,5 @@ app.use('/', getRouter);
 app.use('/', postRouter);
 app.use('/', patchRouter);
 app.use('/', deleteRouter);
-
-// db.sequelize.sync({ alter: true })
-// 	.then(() => {
-// 		console.log('Synced db.');
-// 	})
-// 	.catch((err) => {
-// 		console.log('Failed to sync db: ' + err.message);
-// 	});
-db.sequelize.sync({ force: true }).then(() => {
-	console.log('Drop and re-sync db.');
-});
 
 app.listen(PORT, () => console.log(`Its started ${new Date()} on ${PORT}`));

@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../models/index.js';
-const Task = db.tasks;
+const Task = db.task;
 
 const router = express.Router();
 
