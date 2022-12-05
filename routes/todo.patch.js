@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../models/index.js';
-const Task = db.tasks;
+const Task = db.task;
 
 const router = express.Router();
 
@@ -12,11 +12,11 @@ router.patch('/tasks/:id', (req, res) => {
 	})
 		.then((num) => {
 			if (num == 1) {
-				res.send({
-					message: 'Task was updated successfully.',
+				res.status(200).send({
+					message: 'Task was updated successfully.'
 				});
 			} else {
-				res.send({
+				res.status(400).send({
 					message: `Cannot update Task with id=${id}. Maybe Task was not found or req.body is empty!`,
 				});
 			}
