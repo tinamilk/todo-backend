@@ -37,7 +37,6 @@ router.get(
 	query('order')
 		.optional()
 		.custom((value) => {
-			console.log(value);
 			if (['', 'asc', 'desc'].includes(value)) {
 				return true;
 			}
@@ -57,7 +56,8 @@ router.get(
 		try {
 			const { count, rows } = await Task.findAndCountAll({
 				where: {
-					isDone: typeof filter === 'boolean' ? filter : { [Op.ne]: null },
+					isDone:
+						typeof filter === 'boolean' ? filter : { [Op.or]: [true, false] },
 				},
 				order: [['createdAt', sorting]],
 				offset: (page - 1) * pp,
