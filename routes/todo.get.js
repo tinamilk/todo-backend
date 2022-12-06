@@ -1,49 +1,55 @@
 import express from 'express';
 import db from '../models/index.js';
 const Task = db.task;
-const Op = db.Sequelize.Op;
-import { query, validationResult } from 'express-validator';
+import * as expressValidator from 'express-validator';
+import { validate } from '../helpers/handleError.js';
 
 const router = express.Router();
 
 router.get(
 	'/tasks/',
-	query('pp')
-		.exists()
-		.withMessage('PP is required')
-		.custom((value) => {
-			if (value < 5 || value > 20) {
-				throw new Error('Pp is not between 5 and 20');
-			}
-			return true;
-		}),
-	query('page')
-		.exists()
-		.withMessage('Page is required')
-		.custom((value) => {
-			if (value < 1) {
-				throw new Error('Page cannot be lower than 1');
-			}
-			return true;
-		}),
-	query('filterBy')
-		.optional()
-		.custom((value) => {
-			if (['', 'done', 'undone'].includes(value)) {
+	validate([
+		expressValidator
+			.query('pp')
+			.exists()
+			.withMessage('PP is required')
+			.custom((value) => {
+				if (value < 5 || value > 20) {
+					throw new Error('Pp is not between 5 and 20');
+				}
 				return true;
-			}
-			throw new Error('Must be on of "", "done", "undone"');
-		}),
-	query('order')
-		.optional()
-		.custom((value) => {
-			if (['', 'asc', 'desc'].includes(value)) {
+			}),
+		expressValidator
+			.query('page')
+			.exists()
+			.withMessage('Page is required')
+			.custom((value) => {
+				if (value < 1) {
+					throw new Error('Page cannot be lower than 1');
+				}
 				return true;
-			}
-			throw new Error('Must be on of "", "asc", "desc"');
-		}),
+			}),
+		expressValidator
+			.query('filterBy')
+			.optional()
+			.custom((value) => {
+				if (['', 'done', 'undone'].includes(value)) {
+					return true;
+				}
+				throw new Error('Must be on of "", "done", "undone"');
+			}),
+		expressValidator
+			.query('order')
+			.optional()
+			.custom((value) => {
+				if (['', 'asc', 'desc'].includes(value)) {
+					return true;
+				}
+				throw new Error('Must be on of "", "asc", "desc"');
+			}),
+	]),
 	async (req, res) => {
-		const errors = validationResult(req);
+		const errors = expressValidator.validationResult(req);
 
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.array() });
@@ -56,8 +62,7 @@ router.get(
 		try {
 			const { count, rows } = await Task.findAndCountAll({
 				where: {
-					isDone:
-						typeof filter === 'boolean' ? filter : { [Op.or]: [true, false] },
+					isDone: typeof filter === 'boolean' ? filter : [true, false],
 				},
 				order: [['createdAt', sorting]],
 				offset: (page - 1) * pp,

@@ -5,7 +5,7 @@ const Task = db.task;
 const router = express.Router();
 
 router.delete('/tasks/:id', async (req, res) => {
-	const id = req.params.id;
+	const { id } = req.params;
 
 	try {
 		const result = await Task.findOne({
@@ -22,11 +22,10 @@ router.delete('/tasks/:id', async (req, res) => {
 				message: 'Task was deleted successfully!',
 				task: result,
 			});
-		} else {
-			return res.send({
-				message: `Cannot delete Task with id=${id}. Task was not found!`,
-			});
 		}
+		return res.send({
+			message: `Cannot delete Task with id=${id}. Task was not found!`,
+		});
 	} catch (err) {
 		if (err.name === 'SequelizeDatabaseError') {
 			return res.status(400).json({
