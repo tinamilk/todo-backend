@@ -1,7 +1,7 @@
 import express from 'express';
 import db from '../models/index.js';
 const Task = db.task;
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import { validate } from '../helpers/handleError.js';
 
 const router = express.Router();
@@ -18,12 +18,7 @@ router.patch(
 			.withMessage('Title is empty'),
 	]),
 	async (req, res) => {
-		const errors = validationResult(req);
 		const id = req.params.id;
-
-		if (!errors.isEmpty()) {
-			return res.status(422).json({ errors: errors.array() });
-		}
 
 		try {
 			const updated = await Task.update(req.body, {

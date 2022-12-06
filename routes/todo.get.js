@@ -1,7 +1,7 @@
 import express from 'express';
 import db from '../models/index.js';
 const Task = db.task;
-import * as expressValidator from 'express-validator';
+import { query } from 'express-validator';
 import { validate } from '../helpers/handleError.js';
 
 const router = express.Router();
@@ -9,8 +9,7 @@ const router = express.Router();
 router.get(
 	'/tasks/',
 	validate([
-		expressValidator
-			.query('pp')
+		query('pp')
 			.exists()
 			.withMessage('PP is required')
 			.custom((value) => {
@@ -19,8 +18,7 @@ router.get(
 				}
 				return true;
 			}),
-		expressValidator
-			.query('page')
+		query('page')
 			.exists()
 			.withMessage('Page is required')
 			.custom((value) => {
@@ -29,8 +27,7 @@ router.get(
 				}
 				return true;
 			}),
-		expressValidator
-			.query('filterBy')
+		query('filterBy')
 			.optional()
 			.custom((value) => {
 				if (['', 'done', 'undone'].includes(value)) {
@@ -38,8 +35,7 @@ router.get(
 				}
 				throw new Error('Must be on of "", "done", "undone"');
 			}),
-		expressValidator
-			.query('order')
+		query('order')
 			.optional()
 			.custom((value) => {
 				if (['', 'asc', 'desc'].includes(value)) {
@@ -49,11 +45,6 @@ router.get(
 			}),
 	]),
 	async (req, res) => {
-		const errors = expressValidator.validationResult(req);
-
-		if (!errors.isEmpty()) {
-			return res.status(422).json({ errors: errors.array() });
-		}
 
 		const { filterBy, order, pp, page } = req.query;
 		const sorting = order === 'desc' ? 'DESC' : 'ASC';
