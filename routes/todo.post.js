@@ -1,30 +1,41 @@
 import express from 'express';
 import db from '../models/index.js';
 const Task = db.task;
+import { body, validationResult } from 'express-validator';
+
 
 const router = express.Router();
 
-router.post('/tasks/', (req, res) => {
-	if (!req.body.title) {
-		res.status(400).send({
-			message: 'Content can not be empty!',
-		});
-		return;
-	}
+router.post(
+	'/tasks/',
+	body('title')
+		.not()
+		.isEmpty()
+		.trim()
+		.escape()
+		.isLength({ min: 1 })
+		.withMessage('Title is empty'),
+	async (req, res) => {
+		const errors = validationResult(req);
 
-	const task = {
-		title: req.body.title,
-	};
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
+ 
+		try {
+			const task = {
+				title: req.body.title,
+			};
 
-	Task.create(task)
-		.then((data) => {
+			const data = await Task.create(task);
 			res.status(200).send(data);
-		})
-		.catch((err) => {
+
+		} catch (err) {
 			res.status(500).send({
 				message: err.errors.map((e) => e.message),
 			});
-		});
-});
+		}
+	}
+);
 
 export default router;
