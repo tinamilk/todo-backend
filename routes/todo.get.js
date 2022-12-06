@@ -22,7 +22,7 @@ router.get(
 		.withMessage('Page is required')
 		.custom((value) => {
 			if (value < 1) {
-				throw new Error('Page is lower than 1');
+				throw new Error('Page cannot be lower than 1');
 			}
 			return true;
 		}),
@@ -43,7 +43,7 @@ router.get(
 			}
 			throw new Error('Must be on of "", "asc", "desc"');
 		}),
-	(req, res) => {
+	async (req, res) => {
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -54,23 +54,22 @@ router.get(
 		const sorting = order === 'desc' ? 'DESC' : 'ASC';
 		const filter = !filterBy ? null : filterBy === 'done';
 
-		Task.findAll({
-			where: {
-				isDone: typeof filter === 'boolean' ? filter : { [Op.ne]: null },
-			},
-			order: [['createdAt', sorting]],
-			offset: (page - 1) * pp,
-			limit: pp,
-		})
-			.then((data) => {
-				console.log(data.length);
-				res.status(200).send(data);
-			})
-			.catch((err) => {
-				res.status(500).send({
-					message: err.errors.map((e) => e.message),
-				});
+		try {
+			const data = await Task.findAll({
+				where: {
+					isDone: typeof filter === 'boolean' ? filter : { [Op.ne]: null },
+				},
+				order: [['createdAt', sorting]],
+				offset: (page - 1) * pp,
+				limit: pp,
 			});
+
+			res.status(200).send(data);
+		} catch (err) {
+			res.status(500).send({
+				message: err.errors.map((e) => e.message),
+			});
+		}
 	}
 );
 
