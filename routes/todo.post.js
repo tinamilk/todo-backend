@@ -28,10 +28,10 @@ router.post(
 			};
 
 			const data = await Task.create(task);
-			res.status(200).send(data);
+			return res.status(200).send(data);
 
 		} catch (err) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.errors.map((e) => e.message),
 			});
 		}

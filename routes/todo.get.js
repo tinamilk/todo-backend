@@ -55,7 +55,7 @@ router.get(
 		const filter = !filterBy ? null : filterBy === 'done';
 
 		try {
-			const data = await Task.findAll({
+			const { count, rows } = await Task.findAndCountAll({
 				where: {
 					isDone: typeof filter === 'boolean' ? filter : { [Op.ne]: null },
 				},
@@ -64,9 +64,9 @@ router.get(
 				limit: pp,
 			});
 
-			res.status(200).send(data);
+			return res.status(200).send({ count: count, tasks: rows });
 		} catch (err) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.errors.map((e) => e.message),
 			});
 		}

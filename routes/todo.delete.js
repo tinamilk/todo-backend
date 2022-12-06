@@ -18,16 +18,14 @@ router.delete('/tasks/:id', async (req, res) => {
 		});
 
 		if (deleted == 1) {
-			res.send({
+			return res.send({
 				message: 'Task was deleted successfully!',
 				task: result,
 			});
-			return;
 		} else {
-			res.send({
+			return res.send({
 				message: `Cannot delete Task with id=${id}. Task was not found!`,
 			});
-			return;
 		}
 	} catch (err) {
 		if (err.name === 'SequelizeDatabaseError') {
