@@ -4,28 +4,38 @@ const Task = db.task;
 
 const router = express.Router();
 
-router.delete('/tasks/:id', (req, res) => {
+router.delete('/tasks/:id', async (req, res) => {
+
 	const id = req.params.id;
 
-	Task.destroy({
-		where: { id: id },
-	})
-		.then((num) => {
-			if (num == 1) {
-				res.send({
-					message: 'Task was deleted successfully!',
-				});
-			} else {
-				res.send({
-					message: `Cannot delete Task with id=${id}. Maybe Task was not found!`,
-				});
-			}
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: err.errors.map((e) => e.message),
-			});
+	try {
+
+		const result = await Task.findOne({
+			where: { id: id},
 		});
+
+		const deleted = await Task.destroy({
+			where: { id: id},
+			returning: true
+		});
+
+		if (deleted == 1) {
+			res.send({
+				message: 'Task was deleted successfully!',
+				task: result
+			});
+			return;
+		} else {
+			res.send({
+				message: `Cannot delete Task with id=${id}. Maybe Task was not found!`,
+			});
+			return;
+		}
+	} catch (err) {
+		return res.status(500).send({
+			message: err.errors.map((e) => e.message),
+		});
+	}
 });
 
 export default router;
