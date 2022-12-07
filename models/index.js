@@ -1,6 +1,7 @@
 import dbConfig from '../config/db.config.js';
 import Sequelize from 'sequelize';
-import task from './task.model.js';
+import task from './tasks.js';
+
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 	host: dbConfig.HOST,

@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export default {
-	HOST: process.env.HOST,
-	USER: process.env.USER,
-	PASSWORD: process.env.PASSWORD,
+const config =  {
+	HOST: 'localhost',
+	USER: 'postgres',
+	PASSWORD: 'password123',
 	DB: process.env.DB,
 	dialect: process.env.DIALECT,
 	pool: {
@@ -14,3 +14,5 @@ export default {
 		idle: 10000,
 	},
 };
+
+export default config;

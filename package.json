@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,8 @@
     "prettier": "^2.8.0",
     "recursive-readdir-sync": "^1.0.6",
     "sequelize": "^6.26.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "eslint": "^8.28.0",

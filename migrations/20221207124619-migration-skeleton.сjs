@@ -1,0 +1,37 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+	async up (queryInterface, Sequelize) {
+		return queryInterface.createTable('Tasks', {
+			title: {
+				type: Sequelize.DataTypes.STRING,
+				unique: true,
+			},
+			id: {
+				type: Sequelize.DataTypes.UUID,
+				defaultValue: Sequelize.DataTypes.UUIDV4,
+				primaryKey: true,
+				allowNull: false,
+				unique: true,
+			},
+			createdAt: {
+				type: Sequelize.DataTypes.DATE,
+				allowNull: false,
+			},
+			updatedAt: {
+				type: Sequelize.DataTypes.DATE,
+				allowNull: false,
+			},
+			isDone: {
+				type: Sequelize.DataTypes.BOOLEAN,
+				defaultValue: false,
+				allowNull: false,
+			},
+		});
+	},
+
+	async down (queryInterface, Sequelize) {
+		return queryInterface.dropTable('Tasks');
+	}
+};

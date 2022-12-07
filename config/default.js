@@ -1,6 +1,7 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-module.exports = {
+export default {
 	Customer: {
 		dbConfig: {
 			host: process.env.HOST,

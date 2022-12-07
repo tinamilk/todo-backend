@@ -63,7 +63,7 @@ router.get(
 			return res.status(200).send({ count: count, tasks: rows });
 		} catch (err) {
 			return res.status(500).send({
-				message: err.errors.map((e) => e.message),
+				message: err.errors
 			});
 		}
 	}

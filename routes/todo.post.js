@@ -28,7 +28,7 @@ router.post(
 			return res.status(200).send(data);
 		} catch (err) {
 			return res.status(500).send({
-				message: err.errors.map((e) => e.message),
+				message: err.errors,
 			});
 		}
 	}

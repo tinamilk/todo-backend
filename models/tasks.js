@@ -1,5 +1,5 @@
 export default (sequelize, Sequelize) => {
-	const Task = sequelize.define('task', {
+	const Task = sequelize.define('Tasks', {
 		title: {
 			type: Sequelize.STRING,
 			unique: true,
@@ -24,6 +24,10 @@ export default (sequelize, Sequelize) => {
 			defaultValue: false,
 			allowNull: false,
 		},
+	}, {
+		sequelize,
+		tableName: 'Tasks',
+		modelName: 'Task',
 	});
 
 	return Task;
