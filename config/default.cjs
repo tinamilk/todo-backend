@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-export default {
+module.exports = {
 	Customer: {
 		dbConfig: {
 			host: procces.env.HOST,
