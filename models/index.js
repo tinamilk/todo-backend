@@ -1,20 +1,14 @@
-import dbConfig from '../config/db.config.js';
 import Sequelize from 'sequelize';
 import task from './tasks.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-	host: dbConfig.HOST,
-	dialect: dbConfig.dialect,
+const sequelize = new Sequelize(process.env.PSQL_DATA, {
+	host: process.env.HOST,
+	dialect: process.env.DIALECT,
 	operatorsAliases: false,
 	logging: false,
-
-	pool: {
-		max: dbConfig.pool.max,
-		min: dbConfig.pool.min,
-		acquire: dbConfig.pool.acquire,
-		idle: dbConfig.pool.idle,
-	},
 });
 
 const db = {};
