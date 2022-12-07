@@ -3,9 +3,9 @@ require('dotenv').config();
 module.exports = {
 	Customer: {
 		dbConfig: {
-			host: procces.env.HOST,
-			port: procces.env.PORT,
-			dbName: procces.env.DB,
+			host: process.env.HOST,
+			port: process.env.PORT,
+			dbName: process.env.DB,
 		},
 		credit: {
 			initialLimit: 100,

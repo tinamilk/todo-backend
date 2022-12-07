@@ -2,11 +2,11 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-	HOST: procces.env.PORT,
-	USER: procces.env.USER,
-	PASSWORD: procces.env.PASSWORD,
-	DB: procces.env.DB,
-	dialect: procces.env.DIALECT,
+	HOST: process.env.PORT,
+	USER: process.env.USER,
+	PASSWORD: process.env.PASSWORD,
+	DB: process.env.DB,
+	dialect: process.env.DIALECT,
 	pool: {
 		max: 5,
 		min: 0,
