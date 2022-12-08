@@ -16,7 +16,7 @@ const app = express();
 const PORT = port || 3030;
 
 const corsOptions = {
-	origin: process.env.HOST_URL,
+	origin: process.env.HOST_URL
 };
 
 app.use(cors(corsOptions));
