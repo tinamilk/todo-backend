@@ -33,13 +33,14 @@ router.patch(
 				.status(400)
 				.json(`Cannot update task with id=${id}. Task was not found!`);
 		} catch (err) {
+			console.log(err);
 			if (err.name === 'SequelizeDatabaseError') {
 				return res.status(400).json({
 					message: `Id=${id} is not correct!`,
 				});
 			}
 			return res.status(400).json({
-				message: err.errors.map((e) => e.message),
+				message: err.errors.map((e) => e.message || e.msg),
 			});
 		}
 	}
