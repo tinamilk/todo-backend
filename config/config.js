@@ -8,6 +8,12 @@ export default {
 		database: process.env.DB,
 		host: process.env.HOST,
 		dialect: 'postgres',
+		dialectOptions: {
+			ssl: {
+				require: true,
+				rejectUnauthorized: false,
+			},
+		},
 	},
 	test: {
 		username: process.env.USER_NAME,
@@ -15,6 +21,12 @@ export default {
 		database: process.env.DB,
 		host: process.env.HOST,
 		dialect: 'postgres',
+		dialectOptions: {
+			ssl: {
+				require: true,
+				rejectUnauthorized: false,
+			},
+		},
 	},
 	production: {
 		username: process.env.USER_NAME,
@@ -22,5 +34,11 @@ export default {
 		database: process.env.DB,
 		host: process.env.HOST,
 		dialect: 'postgres',
+		dialectOptions: {
+			ssl: {
+				require: true,
+				rejectUnauthorized: false,
+			},
+		},
 	},
 };
