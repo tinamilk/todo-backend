@@ -13,11 +13,9 @@ const port = process.env.PORT;
 const app = express();
 const PORT = port || 3030;
 
-console.log(process.env.HOST);
 
 const corsOptions = {
-	// origin: `${process.env.HOST}:5432`,
-	origin: 'http://localhost:5432',
+	origin: process.env.HOST_URL,
 };
 
 app.use(cors(corsOptions));

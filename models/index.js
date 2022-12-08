@@ -17,12 +17,16 @@ const hostEnv =
 		}
 		: [null];
 
-
 const sequelize = new Sequelize(...baseEnv, {
 	...hostEnv,
 	logging: false,
+	dialectOptions: {
+		ssl: {
+			require: true,
+			rejectUnauthorized: false,
+		},
+	},
 });
-
 
 const db = {};
 
