@@ -3,13 +3,26 @@ import task from './tasks.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+const baseEnv =
+	process.env.NODE_ENV === 'development'
+		? [process.env.DB, process.env.USER_NAME, process.env.PASSWORD]
+		: [process.env.PSQL_DATA];
 
-const sequelize = new Sequelize(process.env.PSQL_DATA, {
-	host: process.env.HOST,
-	dialect: process.env.DIALECT,
-	operatorsAliases: false,
+const hostEnv =
+	process.env.NODE_ENV === 'development'
+		? {
+			host: process.env.HOST,
+			dialect: 'postgres',
+			operatorsAliases: false,
+		}
+		: [null];
+
+
+const sequelize = new Sequelize(...baseEnv, {
+	...hostEnv,
 	logging: false,
 });
+
 
 const db = {};
 

@@ -2,11 +2,11 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const config =  {
-	HOST: 'localhost',
-	USER: 'postgres',
-	PASSWORD: 'password123',
+	HOST: process.env.HOST,
+	USER: process.env.USER_NAME,
+	PASSWORD: process.env.PASSWORD,
 	DB: process.env.DB,
-	dialect: process.env.DIALECT,
+	dialect: 'postgres',
 	pool: {
 		max: 5,
 		min: 0,
