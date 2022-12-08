@@ -15,20 +15,7 @@ export default {
 			},
 		},
 	},
-	test: {
-		username: process.env.USER_NAME,
-		password: process.env.PASSWORD,
-		database: process.env.DB,
-		host: process.env.HOST,
-		dialect: 'postgres',
-		dialectOptions: {
-			ssl: {
-				require: true,
-				rejectUnauthorized: false,
-			},
-		},
-	},
-	production: {
+	live: {
 		username: process.env.USER_NAME,
 		password: process.env.PASSWORD,
 		database: process.env.DB,

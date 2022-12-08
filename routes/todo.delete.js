@@ -18,12 +18,12 @@ router.delete('/tasks/:id', async (req, res) => {
 		});
 
 		if (deleted == 1) {
-			return res.send({
+			return res.json({
 				message: 'Task was deleted successfully!',
 				task: result,
 			});
 		}
-		return res.send({
+		return res.json({
 			message: `Cannot delete Task with id=${id}. Task was not found!`,
 		});
 	} catch (err) {
@@ -32,7 +32,7 @@ router.delete('/tasks/:id', async (req, res) => {
 				message: `Id=${id} is not correct!`,
 			});
 		}
-		return res.status(500).send({
+		return res.status(500).json({
 			message: err.errors.map((e) => e.message),
 		});
 	}

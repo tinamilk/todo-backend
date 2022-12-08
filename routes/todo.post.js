@@ -25,9 +25,9 @@ router.post(
 			};
 
 			const data = await Task.create(task);
-			return res.status(200).send(data);
+			return res.status(200).json(data);
 		} catch (err) {
-			return res.status(500).send({
+			return res.status(500).json({
 				message: err.errors,
 			});
 		}

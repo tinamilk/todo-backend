@@ -27,18 +27,18 @@ router.patch(
 			});
 
 			if (updated[0] === 1) {
-				return res.status(200).send(updated[1][0]);
+				return res.status(200).json(updated[1][0]);
 			}
 			return res
 				.status(400)
-				.send(`Cannot update task with id=${id}. Task was not found!`);
+				.json(`Cannot update task with id=${id}. Task was not found!`);
 		} catch (err) {
 			if (err.name === 'SequelizeDatabaseError') {
 				return res.status(400).json({
 					message: `Id=${id} is not correct!`,
 				});
 			}
-			return res.status(400).send({
+			return res.status(400).json({
 				message: err.errors.map((e) => e.message),
 			});
 		}
