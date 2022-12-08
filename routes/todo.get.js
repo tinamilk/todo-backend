@@ -43,8 +43,8 @@ router.get(
 	async (req, res) => {
 
 		const { filterBy, order, pp, page } = req.query;
-		perPage = pp || 5;
-		currentPage = page || 1;
+		const perPage = pp || 5;
+		const currentPage = page || 1;
 
 		const sorting = order === 'desc' ? 'DESC' : 'ASC';
 		const filter = !filterBy ? null : filterBy === 'done';
