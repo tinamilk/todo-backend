@@ -33,7 +33,7 @@ router.post(
 				});
 			}
 			return res.status(500).json({
-				message: err.errors.map(e => e.message)
+				message: err.errors?.map((e) => e.message) || 'Cannot add Task',
 			});
 		}
 	}

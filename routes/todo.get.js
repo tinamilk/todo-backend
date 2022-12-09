@@ -10,38 +10,21 @@ router.get(
 	'/tasks/',
 	validate([
 		query('pp')
-			.custom((value) => {
-				if (value < 5 || value > 20) {
-					throw new Error('Pp is not between 5 and 20');
-				}
-				return true;
-			}),
+			.isFloat({ min: 5, max: 20 })
+			.withMessage('Pp is not between 5 and 20'),
 		query('page')
-			.custom((value) => {
-				if (value < 1) {
-					throw new Error('Page cannot be lower than 1');
-				}
-				return true;
-			}),
+			.isFloat({ min: 1 })
+			.withMessage('Page cannot be lower than 1'),
 		query('filterBy')
 			.optional()
-			.custom((value) => {
-				if (['', 'done', 'undone'].includes(value)) {
-					return true;
-				}
-				throw new Error('Must be on of "", "done", "undone"');
-			}),
+			.isIn(['', 'done', 'undone'])
+			.withMessage('Must be on of "", "done", "undone"'),
 		query('order')
 			.optional()
-			.custom((value) => {
-				if (['', 'asc', 'desc'].includes(value)) {
-					return true;
-				}
-				throw new Error('Must be on of "", "asc", "desc"');
-			}),
+			.isIn(['', 'asc', 'desc'])
+			.withMessage('Must be on of "", "asc", "desc"'),
 	]),
 	async (req, res) => {
-
 		const { filterBy, order, pp, page } = req.query;
 		const perPage = pp || 5;
 		const currentPage = page || 1;
@@ -62,7 +45,7 @@ router.get(
 			return res.status(200).json({ count: count, tasks: rows });
 		} catch (err) {
 			return res.status(500).json({
-				message: err.errors.map((e) => e.message),
+				message: err.errors?.map((e) => e.message) || 'Cannot get tasks',
 			});
 		}
 	}

@@ -8,7 +8,7 @@ router.delete('/tasks/:id', async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		const result = await Task.findOne({
+		const taskToDelete = await Task.findOne({
 			where: { id: id },
 		});
 
@@ -20,7 +20,7 @@ router.delete('/tasks/:id', async (req, res) => {
 		if (deleted == 1) {
 			return res.json({
 				message: 'Task was deleted successfully!',
-				task: result,
+				task: taskToDelete,
 			});
 		}
 		return res.json({
@@ -33,7 +33,7 @@ router.delete('/tasks/:id', async (req, res) => {
 			});
 		}
 		return res.status(500).json({
-			message: err.errors.map((e) => e.message),
+			message: err.errors?.map((e) => e.message) || 'Cannot delete Task',
 		});
 	}
 });

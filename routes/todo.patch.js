@@ -26,12 +26,13 @@ router.patch(
 				returning: true,
 			});
 
-			if (updated[0] === 1) {
-				return res.status(200).json(updated[1][0]);
+			if (updated[0] === 0) {
+				return res
+					.status(400)
+					.json(`Cannot update task with id=${id}. Task was not found!`);
 			}
-			return res
-				.status(400)
-				.json(`Cannot update task with id=${id}. Task was not found!`);
+
+			return res.status(200).json(updated[1][0]);
 		} catch (err) {
 			console.log(err);
 			if (err.name === 'SequelizeDatabaseError') {
@@ -40,11 +41,12 @@ router.patch(
 				});
 			}
 			return res.status(422).json({
-				message: err.errors
-					.map((e) => {
-						return e.message;
-					})
-					.join(', '),
+				message:
+					err.errors
+						?.map((e) => {
+							return e.message;
+						})
+						.join(', ') || 'Cannot change task',
 			});
 		}
 	}
