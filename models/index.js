@@ -8,14 +8,11 @@ const baseEnv =
 		? [process.env.DB, process.env.USER_NAME, process.env.PASSWORD]
 		: [process.env.PSQL_DATA];
 
-const hostEnv =
-	process.env.NODE_ENV === 'development'
-		? {
-			host: process.env.HOST,
-			dialect: 'postgres',
-			operatorsAliases: false,
-		}
-		: [null];
+const hostEnv = process.env.NODE_ENV === 'development' && {
+	host: process.env.HOST,
+	dialect: 'postgres',
+	operatorsAliases: false,
+};
 
 const sequelize = new Sequelize(...baseEnv, {
 	...hostEnv,

@@ -39,8 +39,12 @@ router.patch(
 					message: `Id=${id} is not correct!`,
 				});
 			}
-			return res.status(400).json({
-				message: err.errors.map((e) => e.message || e.msg),
+			return res.status(422).json({
+				message: err.errors
+					.map((e) => {
+						return e.message;
+					})
+					.join(', '),
 			});
 		}
 	}
