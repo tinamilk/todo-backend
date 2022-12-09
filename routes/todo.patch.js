@@ -40,6 +40,13 @@ router.patch(
 					message: `Id=${id} is not correct!`,
 				});
 			}
+
+			if (err.name === 'SequelizeUniqueConstraintError') {
+				return res.status(400).json({
+					message: 'Task with the same name exists',
+				});
+			}
+
 			return res.status(422).json({
 				message:
 					err.errors
