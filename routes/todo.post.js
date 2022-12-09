@@ -27,7 +27,11 @@ router.post(
 			const data = await Task.create(task);
 			return res.status(200).json(data);
 		} catch (err) {
-			console.log(err);
+			if (err.name === 'SequelizeUniqueConstraintError') {
+				return res.status(400).json({
+					message: 'Task with the same name exists',
+				});
+			}
 			return res.status(500).json({
 				message: err.errors.map(e => e.message)
 			});
