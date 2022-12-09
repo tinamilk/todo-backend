@@ -21,11 +21,16 @@ Fullstack [Demo](https://tinamilk.github.io/todolist/)
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`HOST` - Ffor example, 'localhost' for local usage
+`HOST` - Host for local usage
+
 `USER_NAME` - PSQL user
+
 `PASSWORD`- PSQL password
+
 `DB` - Database name
 
 `PORT` - Port to run app
+
 `PSQL_DATA`- PSQL url for external database
+
 `HOST_URL` - url for cors usage
