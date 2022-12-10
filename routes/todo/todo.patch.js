@@ -1,8 +1,8 @@
 import express from 'express';
-import db from '../models/index.js';
+import db from '../../models/index.js';
 const Task = db.task;
 import { body } from 'express-validator';
-import { validate } from '../helpers/handleError.js';
+import { validate } from '../../helpers/handleError.js';
 
 const router = express.Router();
 
@@ -40,6 +40,13 @@ router.patch(
 					message: `Id=${id} is not correct!`,
 				});
 			}
+
+			if (err.name === 'SequelizeUniqueConstraintError') {
+				return res.status(400).json({
+					message: 'Task with the same name exists',
+				});
+			}
+
 			return res.status(422).json({
 				message:
 					err.errors

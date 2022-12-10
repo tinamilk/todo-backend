@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import task from './tasks.js';
+import user from './user.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -30,5 +31,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.task = task(sequelize, Sequelize);
+db.user = user(sequelize, Sequelize);
 
 export default db;

@@ -6,6 +6,7 @@ import * as url from 'url';
 import * as dotenv from 'dotenv';
 import winston from 'winston';
 import expressWinston from 'express-winston';
+import {authMidleware} from './services/authMidleware.js';
 dotenv.config();
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -43,6 +44,8 @@ app.use(express.json());
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(authMidleware);
 
 recursive(`${__dirname}/routes`).forEach(async (file) => {
 	const path = await import(file);

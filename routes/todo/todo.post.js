@@ -1,8 +1,8 @@
 import express from 'express';
-import db from '../models/index.js';
+import db from '../../models/index.js';
 const Task = db.task;
 import { body } from 'express-validator';
-import { validate } from '../helpers/handleError.js';
+import { validate } from '../../helpers/handleError.js';
 
 const router = express.Router();
 

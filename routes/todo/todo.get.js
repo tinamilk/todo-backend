@@ -1,8 +1,8 @@
 import express from 'express';
-import db from '../models/index.js';
+import db from '../../models/index.js';
 const Task = db.task;
 import { query } from 'express-validator';
-import { validate } from '../helpers/handleError.js';
+import { validate } from '../../helpers/handleError.js';
 
 const router = express.Router();
 
@@ -25,6 +25,10 @@ router.get(
 			.withMessage('Must be on of "", "asc", "desc"'),
 	]),
 	async (req, res) => {
+		if (!req.user) throw new Error(401);
+
+		const { user } = req;
+
 		const { filterBy, order, pp, page } = req.query;
 		const perPage = pp || 5;
 		const currentPage = page || 1;
@@ -44,7 +48,11 @@ router.get(
 
 			return res.status(200).json({ count: count, tasks: rows });
 		} catch (err) {
-			return res.status(500).json({
+			if (err.message === 401) {
+				res.status(401).json('no token');
+			}
+
+			res.status(400).json({
 				message: err.errors?.map((e) => e.message) || 'Cannot get tasks',
 			});
 		}
