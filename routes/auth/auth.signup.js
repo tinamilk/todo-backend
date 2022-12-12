@@ -15,7 +15,7 @@ function generateAccessToken(username) {
 
 const router = express.Router();
 
-router.post('/user/signup', async (req, res) => {
+router.post('/auth/signup', async (req, res) => {
 	try {
 		const { body } = req;
 
@@ -28,7 +28,7 @@ router.post('/user/signup', async (req, res) => {
 		});
 
 		const accessToken = generateAccessToken({ username: user.id });
-		return res.json(accessToken);
+		return res.json({ accessToken });
 	} catch (err) {
 		return res.status(400).json(err);
 	}

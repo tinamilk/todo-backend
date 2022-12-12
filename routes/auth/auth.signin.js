@@ -10,7 +10,7 @@ function generateAccessToken(username) {
 	return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
 }
 
-router.post('/user/signin', async (req, res) => {
+router.post('/auth/signin', async (req, res) => {
 	try {
 		const user = await User.findOne({
 			where: { email: req.body.email },
@@ -28,7 +28,7 @@ router.post('/user/signin', async (req, res) => {
 
 		const accessToken = generateAccessToken({ username: user.id });
 		console.log(accessToken);
-		return res.status(200).json(accessToken);
+		return res.status(200).json({accessToken});
 	} catch (err) {
 		console.log(err);
 		return res.send(err);
