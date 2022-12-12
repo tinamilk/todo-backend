@@ -27,12 +27,9 @@ router.post('/user/signup', async (req, res) => {
 			password: hashedPassword,
 		});
 
-		console.log(user);
-
 		const accessToken = generateAccessToken({ username: user.id });
 		return res.json(accessToken);
 	} catch (err) {
-		console.log(err);
 		return res.status(400).json(err);
 	}
 });

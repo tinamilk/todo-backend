@@ -3,11 +3,13 @@ import db from '../../models/index.js';
 const Task = db.task;
 import { query } from 'express-validator';
 import { validate } from '../../helpers/handleError.js';
+import { authMidleware } from '../../services/authMidleware.js';
 
 const router = express.Router();
 
 router.get(
 	'/tasks/',
+	authMidleware,
 	validate([
 		query('pp')
 			.isFloat({ min: 5, max: 20 })
@@ -39,6 +41,7 @@ router.get(
 		try {
 			const { count, rows } = await Task.findAndCountAll({
 				where: {
+					userId: user.id,
 					isDone: typeof filter === 'boolean' ? filter : [true, false],
 				},
 				order: [['createdAt', sorting]],

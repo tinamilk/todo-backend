@@ -7,6 +7,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				unique: true,
 			},
+			userId: {
+				type: Sequelize.UUID,
+				allowNull: false,
+			},
 			id: {
 				type: Sequelize.UUID,
 				primaryKey: true,
@@ -26,7 +30,7 @@ module.exports = {
 			},
 		});
 	},
-	async down(queryInterface, Sequelize) {
+	async down(queryInterface) {
 		await queryInterface.dropTable('Tasks');
 	},
 };

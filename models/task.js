@@ -4,7 +4,11 @@ export default (sequelize, Sequelize) => {
 		{
 			title: {
 				type: Sequelize.STRING,
-				unique: true, // fields: [sequelize.fn('lower', sequelize.col('title'))],
+				unique: true,
+			},
+			userId: {
+				type: Sequelize.UUID,
+				allowNull: false,
 			},
 			id: {
 				type: Sequelize.UUID,

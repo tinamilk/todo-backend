@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import task from './tasks.js';
+import task from './task.js';
 import user from './user.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
