@@ -28,7 +28,7 @@ router.post('/auth/signup', async (req, res) => {
 		});
 
 		const accessToken = generateAccessToken({ username: user.id });
-		return res.json({ accessToken });
+		return res.json({ accessToken, name: user.userName});
 	} catch (err) {
 		return res.status(400).json(err);
 	}

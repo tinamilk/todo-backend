@@ -3,13 +3,18 @@ import db from '../../models/index.js';
 const Task = db.task;
 import { body } from 'express-validator';
 import { validate } from '../../helpers/handleError.js';
+import { Sequelize } from 'sequelize';
+import { authMidleware } from '../../services/authMidleware.js';
 
+const Op = Sequelize.Op;
 const router = express.Router();
 
 router.patch(
 	'/tasks/:id',
+	authMidleware,
 	validate([
 		body('title')
+			.optional()
 			.not()
 			.isEmpty()
 			.trim()
@@ -18,13 +23,27 @@ router.patch(
 			.withMessage('Title is empty'),
 	]),
 	async (req, res) => {
+		if (!req.user) throw new Error(401);
+
 		const id = req.params.id;
 
+		const { user } = req;
+
 		try {
+			const checkUnique = req.body.title && await Task.findOne({
+				where: {
+					[Op.and]: [{ title: req.body.title }, { userId: user.id }],
+				},
+			});
+
+			if (checkUnique) {
+				return res.status(400).json({ message: 'Task with same name exist' });
+			}
 			const updated = await Task.update(req.body, {
 				where: { id: id },
 				returning: true,
 			});
+
 
 			if (updated[0] === 0) {
 				return res
@@ -34,26 +53,15 @@ router.patch(
 
 			return res.status(200).json(updated[1][0]);
 		} catch (err) {
-			console.log(err);
+
 			if (err.name === 'SequelizeDatabaseError') {
 				return res.status(400).json({
 					message: `Id=${id} is not correct!`,
 				});
 			}
 
-			if (err.name === 'SequelizeUniqueConstraintError') {
-				return res.status(400).json({
-					message: 'Task with the same name exists',
-				});
-			}
-
 			return res.status(422).json({
-				message:
-					err.errors
-						?.map((e) => {
-							return e.message;
-						})
-						.join(', ') || 'Cannot change task',
+				message: 'Cannot change task',
 			});
 		}
 	}

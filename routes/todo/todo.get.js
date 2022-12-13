@@ -28,7 +28,6 @@ router.get(
 	]),
 	async (req, res) => {
 		if (!req.user) throw new Error(401);
-		console.log(req.user);
 
 		const { user } = req;
 
@@ -57,7 +56,7 @@ router.get(
 			}
 
 			res.status(400).json({
-				message: err.errors?.map((e) => e.message) || 'Cannot get tasks',
+				message: 'Cannot get tasks',
 			});
 		}
 	}

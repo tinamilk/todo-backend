@@ -3,8 +3,7 @@ export default (sequelize, Sequelize) => {
 		'Tasks',
 		{
 			title: {
-				type: Sequelize.STRING,
-				unique: true,
+				type: Sequelize.STRING
 			},
 			userId: {
 				type: Sequelize.UUID,

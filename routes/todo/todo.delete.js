@@ -5,6 +5,7 @@ const Task = db.task;
 const router = express.Router();
 
 router.delete('/tasks/:id', async (req, res) => {
+
 	const { id } = req.params;
 
 	try {
