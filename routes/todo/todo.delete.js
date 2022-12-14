@@ -1,10 +1,12 @@
 import express from 'express';
 import db from '../../models/index.js';
+import { authMidleware } from '../../services/authMidleware.js';
 const Task = db.task;
 
 const router = express.Router();
 
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', authMidleware, async (req, res) => {
+	if (!req.user) return res.status(401).json({ message: 'User not found' });
 
 	const { id } = req.params;
 
@@ -33,7 +35,7 @@ router.delete('/tasks/:id', async (req, res) => {
 				message: `Id=${id} is not correct!`,
 			});
 		}
-		return res.status(500).json({
+		return res.status(400).json({
 			message: err.errors?.map((e) => e.message) || 'Cannot delete Task',
 		});
 	}

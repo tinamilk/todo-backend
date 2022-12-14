@@ -44,8 +44,7 @@ router.post(
 			return res.status(200).json(data);
 		} catch (err) {
 			return res.status(400).json({
-				// message: err.errors?.map((e) => e.message) || 'Cannot add Task',
-				err
+				message: err.errors?.map((e) => e.message) || 'Cannot add Task',
 			});
 		}
 	}

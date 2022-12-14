@@ -3,7 +3,6 @@ import db from '../models/index.js';
 
 export const authMidleware = async (req, res, next) => {
 	try {
-
 		const token = req?.headers?.authorization?.replace('Bearer ', '');
 
 		if (token) {
@@ -14,7 +13,6 @@ export const authMidleware = async (req, res, next) => {
 			next();
 		}
 	} catch (err) {
-
 		res.status(400).send('user not found');
 	}
 };

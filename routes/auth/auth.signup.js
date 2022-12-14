@@ -45,8 +45,7 @@ router.post(
 			const accessToken = generateAccessToken({ username: user.id });
 			return res.json({ accessToken, name: user.userName });
 		} catch (err) {
-			// return res.status(400).json({ message: 'Email is already in use' });
-			return res.status(400).json(err.message);
+			return res.status(400).json({ message: 'Email is already in use' });
 		}
 	}
 );

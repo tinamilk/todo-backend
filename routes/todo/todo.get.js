@@ -27,7 +27,7 @@ router.get(
 			.withMessage('Must be on of "", "asc", "desc"'),
 	]),
 	async (req, res) => {
-		if (!req.user) throw new Error(401);
+		if (!req.user) return res.status(401).json({ message: 'User not found' });
 
 		const { user } = req;
 
@@ -52,12 +52,11 @@ router.get(
 			return res.status(200).json({ count: count, tasks: rows });
 		} catch (err) {
 			if (err.message === 401) {
-				res.status(401).json('no token');
+				res.status(401).json('No token');
 			}
 
 			res.status(400).json({
-				err
-				// message: 'Cannot get tasks',
+				message: 'Cannot get tasks',
 			});
 		}
 	}

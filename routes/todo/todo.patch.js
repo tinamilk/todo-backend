@@ -23,18 +23,20 @@ router.patch(
 			.withMessage('Title is empty'),
 	]),
 	async (req, res) => {
-		if (!req.user) throw new Error(401);
+		if (!req.user) return res.status(401).json({ message: 'User not found' });
 
 		const id = req.params.id;
 
 		const { user } = req;
 
 		try {
-			const checkUnique = req.body.title && await Task.findOne({
-				where: {
-					[Op.and]: [{ title: req.body.title }, { userId: user.id }],
-				},
-			});
+			const checkUnique =
+				req.body.title &&
+				(await Task.findOne({
+					where: {
+						[Op.and]: [{ title: req.body.title }, { userId: user.id }],
+					},
+				}));
 
 			if (checkUnique) {
 				return res.status(400).json({ message: 'Task with same name exist' });
@@ -44,7 +46,6 @@ router.patch(
 				returning: true,
 			});
 
-
 			if (updated[0] === 0) {
 				return res
 					.status(400)
@@ -53,7 +54,6 @@ router.patch(
 
 			return res.status(200).json(updated[1][0]);
 		} catch (err) {
-
 			if (err.name === 'SequelizeDatabaseError') {
 				return res.status(400).json({
 					message: `Id=${id} is not correct!`,
