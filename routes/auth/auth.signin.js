@@ -19,7 +19,6 @@ router.post('/auth/signin', async (req, res) => {
 		if (!user) {
 			return res.status(404).send('user not found');
 		}
-		console.log(user);
 
 		const bcrypted = await bcrypt.compare(req.body.password, user.password);
 
@@ -29,7 +28,7 @@ router.post('/auth/signin', async (req, res) => {
 
 		const accessToken = generateAccessToken({ username: user.id });
 
-		return res.status(200).json({accessToken, name: user.userName});
+		return res.status(200).json({ accessToken, name: user.userName });
 	} catch (err) {
 		return res.send(err);
 	}

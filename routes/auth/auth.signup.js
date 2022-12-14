@@ -3,6 +3,8 @@ import db from '../../models/index.js';
 import * as dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { validate } from '../../helpers/handleError.js';
+import { body } from 'express-validator';
 
 const saltRounds = 10;
 
@@ -15,23 +17,37 @@ function generateAccessToken(username) {
 
 const router = express.Router();
 
-router.post('/auth/signup', async (req, res) => {
-	try {
-		const { body } = req;
+router.post(
+	'/auth/signup',
+	validate([
+		body('email')
+			.not()
+			.isEmpty()
+			.trim()
+			.escape()
+			.isLength({ min: 1 })
+			.normalizeEmail()
+			.isEmail()
+			.withMessage('Invalid email address'),
+	]),
+	async (req, res) => {
+		try {
+			const { body } = req;
 
-		const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+			const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
-		const user = await User.create({
-			userName: body.userName,
-			email: body.email,
-			password: hashedPassword,
-		});
+			const user = await User.create({
+				userName: body.userName,
+				email: body.email,
+				password: hashedPassword,
+			});
 
-		const accessToken = generateAccessToken({ username: user.id });
-		return res.json({ accessToken, name: user.userName});
-	} catch (err) {
-		return res.status(400).json(err);
+			const accessToken = generateAccessToken({ username: user.id });
+			return res.json({ accessToken, name: user.userName });
+		} catch (err) {
+			return res.status(400).json({ message: 'Email is already in use' });
+		}
 	}
-});
+);
 
 export default router;
