@@ -3,7 +3,7 @@ import db from '../../models/index.js';
 const Task = db.task;
 import { query } from 'express-validator';
 import { validate } from '../../helpers/handleError.js';
-import { authMidleware } from '../../services/authMidleware.js';
+import { authMidleware } from '../../services/authMiddleware.js';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../../models/index.js';
-import { authMidleware } from '../../services/authMidleware.js';
+import { authMidleware } from '../../services/authMiddleware.js';
 const Task = db.task;
 
 const router = express.Router();

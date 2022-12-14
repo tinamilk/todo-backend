@@ -4,7 +4,7 @@ const Task = db.task;
 import { body } from 'express-validator';
 import { validate } from '../../helpers/handleError.js';
 import { Sequelize } from 'sequelize';
-import { authMidleware } from '../../services/authMidleware.js';
+import { authMidleware } from '../../services/authMiddleware.js';
 
 const Op = Sequelize.Op;
 const router = express.Router();
