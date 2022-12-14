@@ -56,7 +56,8 @@ router.get(
 			}
 
 			res.status(400).json({
-				message: 'Cannot get tasks',
+				err
+				// message: 'Cannot get tasks',
 			});
 		}
 	}
